@@ -201,15 +201,21 @@
         
         // Listen for custom messages
         context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) => {
-            console.log('Received message:', event.data);
-            
-            try {
-                const data = JSON.parse(event.data);
-                handleGameData(data);
-            } catch (error) {
-                console.error('Error parsing message:', error);
-            }
-        });
+    console.log('Received message:', event.data);
+    
+    try {
+        const data = JSON.parse(event.data);
+        
+        if (data.type === 'test') {
+            document.getElementById('gameInfo').textContent = 'Test: ' + data.message;
+            return;
+        }
+        
+        handleGameData(data);
+    } catch (error) {
+        console.error('Error parsing message:', error);
+    }
+});
         
         function handleGameData(data) {
             const gameInfo = document.getElementById('gameInfo');
