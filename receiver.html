@@ -25,13 +25,13 @@
         
         .tv-header {
             background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
+            padding: 15px 20px;
             text-align: center;
             border-bottom: 3px solid #FFD23F;
         }
         
         .tv-title {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 900;
             color: #FFD23F;
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
@@ -39,8 +39,8 @@
         }
         
         .tv-game-info {
-            font-size: 1.5rem;
-            margin-top: 10px;
+            font-size: 1.2rem;
+            margin-top: 8px;
             opacity: 0.9;
         }
         
@@ -48,72 +48,128 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .tv-game-state {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .tv-current-turn {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 20px;
             text-align: center;
+            border: 3px solid #06FFA5;
+        }
+        
+        .tv-player-info {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .tv-round-info {
+            font-size: 1.5rem;
+            opacity: 0.8;
         }
         
         .tv-scoreboard {
-            width: 100%;
-            max-width: 1200px;
-            margin-bottom: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .tv-scoreboard h3 {
+            margin: 0 0 15px 0;
+            text-align: center;
+            font-size: 1.5rem;
+            color: #FFD23F;
         }
         
         .tv-scores-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
         }
         
         .tv-team-card {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 20px;
-            padding: 25px;
-            border: 3px solid #00B4D8;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #00B4D8;
             transition: all 0.3s ease;
+            text-align: center;
         }
         
         .tv-team-card.active {
             border-color: #06FFA5;
             background: rgba(6, 255, 165, 0.2);
             transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(6, 255, 165, 0.3);
+            box-shadow: 0 5px 20px rgba(6, 255, 165, 0.3);
         }
         
         .tv-team-name {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
         
         .tv-team-score {
-            font-size: 3rem;
+            font-size: 2rem;
             font-weight: 900;
             color: #FFD23F;
         }
         
-        .tv-current-turn {
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 20px 0;
-            border: 3px solid #FF6B35;
+        .tv-game-section {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            display: none;
         }
         
-        .tv-turn-info {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
+        .tv-game-section.active {
+            display: block;
+        }
+        
+        .tv-dice-display {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .tv-dice-value {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00B4D8, #0077B6);
+            border-radius: 20px;
+            padding: 20px 40px;
+            margin: 20px;
+            border: 3px solid #FFD23F;
+            display: inline-block;
+        }
+        
+        .tv-dice-meaning {
+            font-size: 1.3rem;
+            margin-top: 15px;
+            opacity: 0.9;
+        }
+        
+        .tv-timer-display {
+            text-align: center;
+            margin-bottom: 20px;
         }
         
         .tv-timer {
-            font-size: 6rem;
+            font-size: 5rem;
             font-weight: 900;
             color: #06FFA5;
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            margin: 20px 0;
         }
         
         .tv-timer.warning {
@@ -131,26 +187,41 @@
             50% { transform: scale(1.1); }
         }
         
-        .tv-dice {
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #00B4D8, #0077B6);
-            border-radius: 20px;
-            padding: 20px 30px;
-            margin: 20px;
-            border: 3px solid #FFD23F;
+        .tv-questions {
+            display: grid;
+            gap: 10px;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
-        .tv-status {
-            font-size: 2rem;
-            margin: 20px 0;
-            opacity: 0.9;
+        .tv-question {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 1.3rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tv-question.selected {
+            border-color: #06FFA5;
+            background: rgba(6, 255, 165, 0.2);
+        }
+        
+        .tv-category {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #FFD23F;
         }
         
         .waiting-message {
-            font-size: 2.5rem;
+            text-align: center;
+            font-size: 2rem;
             opacity: 0.8;
             animation: fadeInOut 2s ease-in-out infinite;
+            margin-top: 50px;
         }
         
         @keyframes fadeInOut {
@@ -158,11 +229,13 @@
             50% { opacity: 1; }
         }
         
-        .chromecast-logo {
-            font-size: 8rem;
-            color: #FFD23F;
-            margin: 40px 0;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        .tv-status-message {
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -173,24 +246,60 @@
     </div>
     
     <div class="tv-content" id="tvContent">
-        <div class="chromecast-logo">
-            📺
-        </div>
-        <div class="waiting-message">
+        <div class="waiting-message" id="waitingMessage">
             🎮 Waiting for game to start...
         </div>
         
-        <div class="tv-scoreboard" id="scoreboard" style="display: none;">
-            <div class="tv-scores-grid" id="scoresGrid">
-                <!-- Team scores will appear here -->
+        <div class="tv-game-state" id="gameState" style="display: none;">
+            <!-- Current Turn Info -->
+            <div class="tv-current-turn" id="currentTurn">
+                <div class="tv-player-info" id="playerInfo">Player's Turn</div>
+                <div class="tv-round-info" id="roundInfo">Round 1</div>
             </div>
-        </div>
-        
-        <div class="tv-current-turn" id="currentTurn" style="display: none;">
-            <div class="tv-turn-info" id="turnInfo">Player's Turn</div>
-            <div class="tv-timer" id="timer">30</div>
-            <div class="tv-dice" id="diceDisplay" style="display: none;">
-                Dice: <span id="diceValue">0</span>
+            
+            <!-- Scoreboard -->
+            <div class="tv-scoreboard" id="scoreboard">
+                <h3>Current Standings</h3>
+                <div class="tv-scores-grid" id="scoresGrid">
+                    <!-- Team scores will appear here -->
+                </div>
+            </div>
+            
+            <!-- Dice Section -->
+            <div class="tv-game-section" id="diceSection">
+                <div class="tv-dice-display">
+                    <div class="tv-dice-value" id="diceValue">0</div>
+                    <div class="tv-dice-meaning" id="diceMeaning">Roll the dice to start!</div>
+                </div>
+            </div>
+            
+            <!-- Card Section -->
+            <div class="tv-game-section" id="cardSection">
+                <div class="tv-status-message">
+                    <div class="tv-category" id="category">Ready to draw card...</div>
+                    <p>Prepare to describe 5 words!</p>
+                </div>
+            </div>
+            
+            <!-- Timer Section -->
+            <div class="tv-game-section" id="timerSection">
+                <div class="tv-timer-display">
+                    <div class="tv-timer" id="timer">30</div>
+                </div>
+                <div class="tv-questions" id="questionsDisplay">
+                    <!-- Questions will appear here -->
+                </div>
+            </div>
+            
+            <!-- Results Section -->
+            <div class="tv-game-section" id="resultsSection">
+                <div class="tv-status-message">
+                    <h3>Time's Up!</h3>
+                    <p>Reviewing answers...</p>
+                </div>
+                <div class="tv-questions" id="finalQuestionsDisplay">
+                    <!-- Final questions will appear here -->
+                </div>
             </div>
         </div>
     </div>
@@ -201,43 +310,38 @@
         
         // Listen for custom messages
         context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) => {
-    console.log('Received message:', event.data);
-    
-    try {
-        const data = JSON.parse(event.data);
-        
-        if (data.type === 'test') {
-            document.getElementById('gameInfo').textContent = 'Test: ' + data.message;
-            return;
-        }
-        
-        handleGameData(data);
-    } catch (error) {
-        console.error('Error parsing message:', error);
-    }
-});
+            console.log('Received message:', event.data);
+            
+            try {
+                const data = JSON.parse(event.data);
+                
+                if (data.type === 'test') {
+                    document.getElementById('gameInfo').textContent = 'Test: ' + data.message;
+                    return;
+                }
+                
+                handleGameData(data);
+            } catch (error) {
+                console.error('Error parsing message:', error);
+            }
+        });
         
         function handleGameData(data) {
-            const gameInfo = document.getElementById('gameInfo');
-            const tvContent = document.getElementById('tvContent');
-            const scoreboard = document.getElementById('scoreboard');
-            const currentTurn = document.getElementById('currentTurn');
-            
             switch (data.type) {
-                case 'gameState':
-                    updateGameState(data);
+                case 'fullGameState':
+                    updateFullGameDisplay(data);
                     break;
                     
                 case 'dice_rolled':
-                    showDiceRoll(data);
-                    break;
-                    
-                case 'timer_started':
-                    showTimer(data);
+                    showDiceResult(data);
                     break;
                     
                 case 'card_drawn':
                     showCardDrawn(data);
+                    break;
+                    
+                case 'timer_started':
+                    showTimer(data);
                     break;
                     
                 default:
@@ -245,62 +349,137 @@
             }
         }
         
-        function updateGameState(data) {
-            const gameInfo = document.getElementById('gameInfo');
-            const scoreboard = document.getElementById('scoreboard');
-            const scoresGrid = document.getElementById('scoresGrid');
+        function updateFullGameDisplay(data) {
+            console.log('Updating full game display:', data);
             
+            // Show game state, hide waiting
+            document.getElementById('waitingMessage').style.display = 'none';
+            document.getElementById('gameState').style.display = 'flex';
+            
+            // Update game info
+            document.getElementById('gameInfo').textContent = 
+                `Round ${data.currentRound} - ${data.currentPlayer} (${data.currentTeam}) playing`;
+            
+            // Update current turn info
+            document.getElementById('playerInfo').textContent = 
+                `${data.currentPlayer} (${data.currentTeam})`;
+            document.getElementById('roundInfo').textContent = 
+                `Round ${data.currentRound}`;
+            
+            // Update scoreboard
             if (data.scores && data.scores.length > 0) {
-                gameInfo.textContent = `Round ${data.currentRound || 1} - ${data.currentTeam || 'Game'} playing`;
-                
-                // Show scoreboard
-                scoreboard.style.display = 'block';
-                
-                // Update team scores
-                scoresGrid.innerHTML = data.scores.map((team, index) => `
+                const scoresGrid = document.getElementById('scoresGrid');
+                scoresGrid.innerHTML = data.scores.map(team => `
                     <div class="tv-team-card ${team.name === data.currentTeam ? 'active' : ''}">
                         <div class="tv-team-name">${team.name}</div>
                         <div class="tv-team-score">${team.score}</div>
                     </div>
                 `).join('');
             }
-        }
-        
-        function showDiceRoll(data) {
-            const currentTurn = document.getElementById('currentTurn');
-            const turnInfo = document.getElementById('turnInfo');
-            const diceDisplay = document.getElementById('diceDisplay');
-            const diceValue = document.getElementById('diceValue');
             
-            currentTurn.style.display = 'block';
-            turnInfo.textContent = `${data.playerName} rolled the dice!`;
-            diceDisplay.style.display = 'block';
-            diceValue.textContent = data.diceValue;
-        }
-        
-        function showTimer(data) {
-            const currentTurn = document.getElementById('currentTurn');
-            const turnInfo = document.getElementById('turnInfo');
-            const timer = document.getElementById('timer');
+            // Show appropriate section based on game status
+            hideAllSections();
             
-            currentTurn.style.display = 'block';
-            turnInfo.textContent = 'Describing words...';
-            
-            if (data.timeRemaining !== undefined) {
-                timer.textContent = data.timeRemaining;
-                timer.className = 'tv-timer';
-                
-                if (data.timeRemaining <= 5) {
-                    timer.className = 'tv-timer urgent';
-                } else if (data.timeRemaining <= 10) {
-                    timer.className = 'tv-timer warning';
-                }
+            if (data.gameStatus === 'setup' || !data.gameStatus) {
+                showDiceSection(data);
+            } else if (data.gameStatus === 'dice') {
+                showDiceSection(data);
+            } else if (data.gameStatus === 'card') {
+                showCardSection(data);
+            } else if (data.gameStatus === 'timer') {
+                showTimerSection(data);
+            } else if (data.gameStatus === 'results') {
+                showResultsSection(data);
             }
         }
         
+        function hideAllSections() {
+            document.querySelectorAll('.tv-game-section').forEach(section => {
+                section.classList.remove('active');
+            });
+        }
+        
+        function showDiceSection(data) {
+            document.getElementById('diceSection').classList.add('active');
+            
+            if (data.diceValue !== null && data.diceValue !== undefined) {
+                document.getElementById('diceValue').textContent = data.diceValue;
+                const meanings = {
+                    0: 'Full points for each correct answer!',
+                    1: 'Need more than 1 correct to score points!',
+                    2: 'Need more than 2 correct to score points!'
+                };
+                document.getElementById('diceMeaning').textContent = 
+                    meanings[data.diceValue] || 'Roll complete!';
+            } else {
+                document.getElementById('diceMeaning').textContent = 'Roll the dice to start!';
+            }
+        }
+        
+        function showCardSection(data) {
+            document.getElementById('cardSection').classList.add('active');
+            
+            if (data.currentCategory) {
+                document.getElementById('category').textContent = data.currentCategory;
+            }
+        }
+        
+        function showTimerSection(data) {
+            document.getElementById('timerSection').classList.add('active');
+            
+            // Update timer
+            if (data.timeRemaining !== undefined) {
+                const timerElement = document.getElementById('timer');
+                timerElement.textContent = data.timeRemaining;
+                
+                // Apply warning classes
+                timerElement.className = 'tv-timer';
+                if (data.timeRemaining <= 5) {
+                    timerElement.classList.add('urgent');
+                } else if (data.timeRemaining <= 10) {
+                    timerElement.classList.add('warning');
+                }
+            }
+            
+            // Show questions (without interaction)
+            if (data.currentQuestions && data.currentQuestions.length > 0) {
+                const questionsDisplay = document.getElementById('questionsDisplay');
+                questionsDisplay.innerHTML = data.currentQuestions.map((question, index) => `
+                    <div class="tv-question ${data.selectedAnswers && data.selectedAnswers.includes(index) ? 'selected' : ''}">
+                        ${question}
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function showResultsSection(data) {
+            document.getElementById('resultsSection').classList.add('active');
+            
+            // Show final questions with selections
+            if (data.currentQuestions && data.currentQuestions.length > 0) {
+                const finalDisplay = document.getElementById('finalQuestionsDisplay');
+                finalDisplay.innerHTML = data.currentQuestions.map((question, index) => `
+                    <div class="tv-question ${data.selectedAnswers && data.selectedAnswers.includes(index) ? 'selected' : ''}">
+                        ${question}
+                    </div>
+                `).join('');
+            }
+        }
+        
+        // Legacy handlers for individual events
+        function showDiceResult(data) {
+            showDiceSection({ diceValue: data.diceValue });
+        }
+        
         function showCardDrawn(data) {
-            const gameInfo = document.getElementById('gameInfo');
-            gameInfo.textContent = `Card drawn: ${data.category || 'Mixed Categories'}`;
+            showCardSection({ currentCategory: data.category });
+        }
+        
+        function showTimer(data) {
+            showTimerSection({ 
+                timeRemaining: data.timeRemaining,
+                currentQuestions: data.questions 
+            });
         }
         
         // Start the receiver
