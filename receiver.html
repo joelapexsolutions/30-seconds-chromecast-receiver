@@ -2,7 +2,12 @@
 <html>
 <head>
     <title>30 Seconds Game - TV Display</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
@@ -13,6 +18,7 @@
             padding: 0;
             overflow: hidden;
             height: 100vh;
+            width: 100vw;
             display: flex;
             flex-direction: column;
         }
@@ -25,22 +31,22 @@
         
         .tv-header {
             background: rgba(0, 0, 0, 0.8);
-            padding: 15px 20px;
+            padding: 10px 15px;
             text-align: center;
             border-bottom: 3px solid #FFD23F;
+            flex-shrink: 0;
         }
         
-        .tv-title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: #FFD23F;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            margin: 0;
+        .tv-title-image {
+            max-height: 60px;
+            max-width: 90%;
+            height: auto;
+            width: auto;
         }
         
         .tv-game-info {
-            font-size: 1.2rem;
-            margin-top: 8px;
+            font-size: 1rem;
+            margin-top: 5px;
             opacity: 0.9;
         }
         
@@ -48,61 +54,65 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 15px;
             overflow-y: auto;
+            min-height: 0;
         }
         
         .tv-game-state {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-width: 1200px;
+            gap: 15px;
+            max-width: 100%;
             margin: 0 auto;
             width: 100%;
+            height: 100%;
         }
         
         .tv-current-turn {
             background: rgba(0, 0, 0, 0.8);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 10px;
+            padding: 15px;
             text-align: center;
             border: 3px solid #06FFA5;
+            flex-shrink: 0;
         }
         
         .tv-player-info {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .tv-round-info {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             opacity: 0.8;
         }
         
         .tv-scoreboard {
             background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 10px;
+            padding: 15px;
+            flex-shrink: 0;
         }
         
         .tv-scoreboard h3 {
-            margin: 0 0 15px 0;
+            margin: 0 0 10px 0;
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #FFD23F;
         }
         
         .tv-scores-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
         }
         
         .tv-team-card {
             background: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 8px;
+            padding: 10px;
             border: 2px solid #00B4D8;
             transition: all 0.3s ease;
             text-align: center;
@@ -116,22 +126,24 @@
         }
         
         .tv-team-name {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
         
         .tv-team-score {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 900;
             color: #FFD23F;
         }
         
         .tv-game-section {
             background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 10px;
+            padding: 15px;
             display: none;
+            flex: 1;
+            min-height: 0;
         }
         
         .tv-game-section.active {
@@ -140,33 +152,33 @@
         
         .tv-dice-display {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
         }
         
         .tv-dice-value {
-            font-size: 4rem;
+            font-size: 3rem;
             font-weight: 900;
             background: linear-gradient(135deg, #00B4D8, #0077B6);
-            border-radius: 20px;
-            padding: 20px 40px;
-            margin: 20px;
+            border-radius: 15px;
+            padding: 15px 30px;
+            margin: 15px;
             border: 3px solid #FFD23F;
             display: inline-block;
         }
         
         .tv-dice-meaning {
-            font-size: 1.3rem;
-            margin-top: 15px;
+            font-size: 1.1rem;
+            margin-top: 10px;
             opacity: 0.9;
         }
         
         .tv-timer-display {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .tv-timer {
-            font-size: 5rem;
+            font-size: 4rem;
             font-weight: 900;
             color: #06FFA5;
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
@@ -189,18 +201,18 @@
         
         .tv-category {
             text-align: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: #FFD23F;
         }
         
         .waiting-message {
             text-align: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
             opacity: 0.8;
             animation: fadeInOut 2s ease-in-out infinite;
-            margin-top: 50px;
+            margin-top: 30px;
         }
         
         @keyframes fadeInOut {
@@ -210,44 +222,44 @@
         
         .tv-status-message {
             text-align: center;
-            font-size: 1.5rem;
-            margin: 20px 0;
-            padding: 15px;
+            font-size: 1.2rem;
+            margin: 15px 0;
+            padding: 12px;
             background: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
+            border-radius: 8px;
         }
         
         .tv-status-message p {
-            font-size: 1.8rem;
-            margin: 10px 0;
+            font-size: 1.4rem;
+            margin: 8px 0;
         }
         
-        /* NEW STYLES FOR QUESTION PROGRESS */
         .tv-questions-progress {
-            max-width: 600px;
-            margin: 20px auto;
+            max-width: 90%;
+            margin: 15px auto;
             text-align: center;
         }
         
         .progress-info {
             background: rgba(0, 0, 0, 0.6);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
         }
         
         .questions-summary {
             display: flex;
             justify-content: space-around;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
         
         .questions-total,
         .questions-correct {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
+            gap: 8px;
+            font-size: 1.4rem;
             font-weight: 600;
         }
         
@@ -261,38 +273,38 @@
         
         .progress-bar-container {
             width: 100%;
-            height: 20px;
+            height: 15px;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
+            border-radius: 8px;
             overflow: hidden;
-            margin: 15px 0;
+            margin: 12px 0;
         }
         
         .progress-bar {
             height: 100%;
             background: linear-gradient(90deg, #06FFA5, #00B4D8);
-            border-radius: 10px;
+            border-radius: 8px;
             transition: width 0.3s ease;
             width: 0%;
         }
         
         .final-results-display {
-            max-width: 500px;
+            max-width: 90%;
             margin: 0 auto;
         }
         
         .result-summary {
             background: rgba(0, 0, 0, 0.6);
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 10px;
+            padding: 20px;
         }
         
         .result-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 15px 0;
-            font-size: 1.5rem;
+            margin: 12px 0;
+            font-size: 1.2rem;
         }
         
         .result-label {
@@ -302,14 +314,26 @@
         
         .result-value {
             font-weight: 900;
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: #06FFA5;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-height: 720px) {
+            .tv-header { padding: 5px 10px; }
+            .tv-title-image { max-height: 40px; }
+            .tv-content { padding: 10px; }
+            .tv-game-state { gap: 10px; }
+            .tv-timer { font-size: 3rem; }
+            .tv-dice-value { font-size: 2.5rem; padding: 12px 24px; }
         }
     </style>
 </head>
 <body>
     <div class="tv-header">
-        <h1 class="tv-title">30 SECONDS GAME</h1>
+        <img src="https://raw.githubusercontent.com/joelapexsolutions/30-seconds-chromecast-receiver/main/Heading.jpg" 
+             alt="30 Seconds Game" class="tv-title-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <h1 class="tv-title" style="display: none; font-size: 2rem; font-weight: 900; color: #FFD23F; text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); margin: 0;">30 SECONDS GAME</h1>
         <div class="tv-game-info" id="gameInfo">Ready to cast your game!</div>
     </div>
     
@@ -319,21 +343,16 @@
         </div>
         
         <div class="tv-game-state" id="gameState" style="display: none;">
-            <!-- Current Turn Info -->
             <div class="tv-current-turn" id="currentTurn">
                 <div class="tv-player-info" id="playerInfo">Player's Turn</div>
                 <div class="tv-round-info" id="roundInfo">Round 1</div>
             </div>
             
-            <!-- Scoreboard -->
             <div class="tv-scoreboard" id="scoreboard">
                 <h3>Current Standings</h3>
-                <div class="tv-scores-grid" id="scoresGrid">
-                    <!-- Team scores will appear here -->
-                </div>
+                <div class="tv-scores-grid" id="scoresGrid"></div>
             </div>
             
-            <!-- Dice Section -->
             <div class="tv-game-section" id="diceSection">
                 <div class="tv-dice-display">
                     <div class="tv-dice-value" id="diceValue">0</div>
@@ -341,7 +360,6 @@
                 </div>
             </div>
             
-            <!-- Card Section -->
             <div class="tv-game-section" id="cardSection">
                 <div class="tv-status-message">
                     <div class="tv-category" id="category">Ready to draw card...</div>
@@ -349,23 +367,21 @@
                 </div>
             </div>
             
-            <!-- Timer Section -->
             <div class="tv-game-section" id="timerSection">
                 <div class="tv-timer-display">
                     <div class="tv-timer" id="timer">30</div>
                 </div>
                 
-                <!-- Show progress instead of actual questions -->
                 <div class="tv-questions-progress" id="questionsProgress">
                     <div class="tv-category" id="timerCategory">Category Name</div>
                     <div class="progress-info">
                         <div class="questions-summary">
                             <div class="questions-total">
-                                <i class="fas fa-list"></i>
+                                <span>📝</span>
                                 <span id="questionsTotal">5</span> Questions
                             </div>
                             <div class="questions-correct">
-                                <i class="fas fa-check-circle"></i>
+                                <span>✅</span>
                                 <span id="questionsCorrect">0</span> Correct
                             </div>
                         </div>
@@ -380,7 +396,6 @@
                 </div>
             </div>
             
-            <!-- Results Section -->
             <div class="tv-game-section" id="resultsSection">
                 <div class="tv-status-message">
                     <h3>Time's Up!</h3>
@@ -410,40 +425,35 @@
     <script>
         const context = cast.framework.CastReceiverContext.getInstance();
         
-        // Listen for custom messages
-context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) => {
-    console.log('Raw message received:', event.data);
-    
-    // Check if the message is already an object
-    let data;
-    if (typeof event.data === 'string') {
-        try {
-            data = JSON.parse(event.data);
-        } catch (error) {
-            console.error('JSON Parse Error:', error);
-            console.error('Raw data:', event.data);
-            document.getElementById('gameInfo').textContent = 'JSON Error: ' + event.data;
-            return;
-        }
-    } else if (typeof event.data === 'object') {
-        data = event.data;
-    } else {
-        console.error('Unexpected data type:', typeof event.data);
-        document.getElementById('gameInfo').textContent = 'Data Type Error: ' + typeof event.data;
-        return;
-    }
-    
-    console.log('Parsed data:', data);
-    
-    if (data.type === 'test') {
-        document.getElementById('gameInfo').textContent = 'Test: ' + data.message;
-        return;
-    }
-    
-    handleGameData(data);
-});
+        context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) => {
+            console.log('Raw message received:', event.data);
+            
+            let data;
+            if (typeof event.data === 'string') {
+                try {
+                    data = JSON.parse(event.data);
+                } catch (error) {
+                    console.error('JSON Parse Error:', error);
+                    document.getElementById('gameInfo').textContent = 'JSON Error: ' + event.data;
+                    return;
+                }
+            } else if (typeof event.data === 'object') {
+                data = event.data;
+            } else {
+                console.error('Unexpected data type:', typeof event.data);
+                return;
+            }
+            
+            console.log('Parsed data:', data);
+            
+            if (data.type === 'test') {
+                document.getElementById('gameInfo').textContent = 'Test: ' + data.message;
+                return;
+            }
+            
+            handleGameData(data);
+        });
         
-        // Send ready message when receiver starts
         context.sendCustomMessage('urn:x-cast:com.thirtyseconds.game', undefined, {
             type: 'receiver_ready',
             timestamp: Date.now()
@@ -456,30 +466,23 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
                 case 'fullGameState':
                     updateFullGameDisplay(data);
                     break;
-                    
                 case 'dice_rolled':
                     showDiceResult(data);
                     break;
-                    
                 case 'card_drawn':
                     showCardDrawn(data);
                     break;
-                    
                 case 'timer_started':
                     showTimer(data);
                     break;
-                    
                 case 'timer_update':
                     updateTimer(data);
                     break;
-                    
                 case 'answers_submitted':
                     showAnswersSubmitted(data);
                     break;
-                    
                 default:
                     console.log('Unknown message type:', data.type);
-                    // Show debug info
                     document.getElementById('gameInfo').textContent = 
                         'Received: ' + data.type + ' at ' + new Date().toLocaleTimeString();
             }
@@ -488,21 +491,17 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
         function updateFullGameDisplay(data) {
             console.log('Updating full game display:', data);
             
-            // IMPORTANT: Show game state immediately, hide waiting message
             document.getElementById('waitingMessage').style.display = 'none';
             document.getElementById('gameState').style.display = 'flex';
             
-            // Update game info header
             document.getElementById('gameInfo').textContent = 
                 `Round ${data.currentRound} - ${data.currentPlayer} (${data.currentTeam})`;
             
-            // Update current turn info
             document.getElementById('playerInfo').textContent = 
                 `${data.currentPlayer} (${data.currentTeam})`;
             document.getElementById('roundInfo').textContent = 
                 `Round ${data.currentRound}`;
             
-            // Update scoreboard
             if (data.scores && data.scores.length > 0) {
                 const scoresGrid = document.getElementById('scoresGrid');
                 scoresGrid.innerHTML = data.scores.map(team => `
@@ -513,10 +512,8 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
                 `).join('');
             }
             
-            // Show appropriate section based on game status
             hideAllSections();
             
-            // Handle different game states
             if (data.gameStatus === 'setup' || !data.gameStatus) {
                 showDiceSection(data);
             } else if (data.gameStatus === 'dice') {
@@ -528,7 +525,6 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
             } else if (data.gameStatus === 'results') {
                 showResultsSection(data);
             } else if (data.gameStatus === 'active') {
-                // For active games, show based on other indicators
                 if (data.timerActive) {
                     showTimerSection(data);
                 } else if (data.cardDrawn) {
@@ -539,7 +535,6 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
                     showDiceSection(data);
                 }
             } else {
-                // Default to dice section if unclear
                 showDiceSection(data);
             }
         }
@@ -574,7 +569,6 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
                 document.getElementById('category').textContent = data.currentCategory;
             }
             
-            // Show questions count if available
             if (data.questionsCount) {
                 const categoryElement = document.getElementById('category');
                 categoryElement.textContent = `${data.currentCategory || 'Questions'} (${data.questionsCount} questions)`;
@@ -584,12 +578,10 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
         function showTimerSection(data) {
             document.getElementById('timerSection').classList.add('active');
             
-            // Update timer
             if (data.timeRemaining !== undefined) {
                 const timerElement = document.getElementById('timer');
                 timerElement.textContent = data.timeRemaining;
                 
-                // Apply warning classes
                 timerElement.className = 'tv-timer';
                 if (data.timeRemaining <= 5) {
                     timerElement.classList.add('urgent');
@@ -598,24 +590,20 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
                 }
             }
             
-            // Update category
             if (data.currentCategory) {
                 document.getElementById('timerCategory').textContent = data.currentCategory;
             }
             
-            // Update current player
             if (data.currentPlayer) {
                 document.getElementById('currentPlayerTimer').textContent = data.currentPlayer;
             }
             
-            // Show progress instead of questions
             const questionsTotal = data.questionsCount || 5;
             const questionsCorrect = data.correctAnswersCount || 0;
             
             document.getElementById('questionsTotal').textContent = questionsTotal;
             document.getElementById('questionsCorrect').textContent = questionsCorrect;
             
-            // Update progress bar
             const progressPercent = questionsTotal > 0 ? (questionsCorrect / questionsTotal) * 100 : 0;
             document.getElementById('questionsProgressBar').style.width = progressPercent + '%';
         }
@@ -623,14 +611,12 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
         function showResultsSection(data) {
             document.getElementById('resultsSection').classList.add('active');
             
-            // Show final results summary
             const questionsTotal = data.questionsCount || 5;
             const questionsCorrect = data.correctAnswersCount || 0;
             
             document.getElementById('finalQuestionsTotal').textContent = questionsTotal;
             document.getElementById('finalQuestionsCorrect').textContent = questionsCorrect;
             
-            // Calculate points based on dice value (if available)
             let pointsEarned = 0;
             if (data.diceValue !== undefined) {
                 if (data.diceValue === 0) {
@@ -639,7 +625,6 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
                     pointsEarned = Math.max(0, questionsCorrect - data.diceValue);
                 }
                 
-                // Double points if active
                 if (data.doubleActive) {
                     pointsEarned *= 2;
                 }
@@ -649,12 +634,10 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
         }
         
         function updateTimer(data) {
-            // Update timer display
             if (data.timeRemaining !== undefined) {
                 const timerElement = document.getElementById('timer');
                 timerElement.textContent = data.timeRemaining;
                 
-                // Apply warning classes
                 timerElement.className = 'tv-timer';
                 if (data.timeRemaining <= 5) {
                     timerElement.classList.add('urgent');
@@ -663,22 +646,18 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
                 }
             }
             
-            // Update progress
             if (data.correctAnswersCount !== undefined && data.questionsCount !== undefined) {
                 document.getElementById('questionsCorrect').textContent = data.correctAnswersCount;
                 document.getElementById('questionsTotal').textContent = data.questionsCount;
                 
-                // Update progress bar
                 const progressPercent = data.questionsCount > 0 ? (data.correctAnswersCount / data.questionsCount) * 100 : 0;
                 document.getElementById('questionsProgressBar').style.width = progressPercent + '%';
             }
         }
         
         function showAnswersSubmitted(data) {
-            // Show final results
             showResultsSection(data);
             
-            // Update with submitted answer data
             if (data.correctCount !== undefined) {
                 document.getElementById('finalQuestionsCorrect').textContent = data.correctCount;
             }
@@ -688,7 +667,6 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
             }
         }
         
-        // Legacy handlers for individual events
         function showDiceResult(data) {
             showDiceSection({ diceValue: data.diceValue });
         }
@@ -709,7 +687,6 @@ context.addCustomMessageListener('urn:x-cast:com.thirtyseconds.game', (event) =>
             });
         }
         
-        // Start the receiver
         context.start();
         
         console.log('30 Seconds Game Chromecast Receiver loaded');
