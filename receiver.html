@@ -281,28 +281,62 @@
                 </div>
             </div>
             
-            <!-- Timer Section -->
-            <div class="tv-game-section" id="timerSection">
-                <div class="tv-timer-display">
-                    <div class="tv-timer" id="timer">30</div>
+            <!-- Replace the timer section in receiver.html with this: -->
+
+<!-- Timer Section -->
+<div class="tv-game-section" id="timerSection">
+    <div class="tv-timer-display">
+        <div class="tv-timer" id="timer">30</div>
+    </div>
+    
+    <!-- Show progress instead of actual questions -->
+    <div class="tv-questions-progress" id="questionsProgress">
+        <div class="tv-category" id="timerCategory">Category Name</div>
+        <div class="progress-info">
+            <div class="questions-summary">
+                <div class="questions-total">
+                    <i class="fas fa-list"></i>
+                    <span id="questionsTotal">5</span> Questions
                 </div>
-                <div class="tv-questions" id="questionsDisplay">
-                    <!-- Questions will appear here -->
+                <div class="questions-correct">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="questionsCorrect">0</span> Correct
                 </div>
             </div>
-            
-            <!-- Results Section -->
-            <div class="tv-game-section" id="resultsSection">
-                <div class="tv-status-message">
-                    <h3>Time's Up!</h3>
-                    <p>Reviewing answers...</p>
-                </div>
-                <div class="tv-questions" id="finalQuestionsDisplay">
-                    <!-- Final questions will appear here -->
-                </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="questionsProgressBar"></div>
             </div>
         </div>
     </div>
+    
+    <div class="tv-status-message">
+        <p><span id="currentPlayerTimer">Player</span> is describing...</p>
+    </div>
+</div>
+
+<!-- Results Section -->
+<div class="tv-game-section" id="resultsSection">
+    <div class="tv-status-message">
+        <h3>Time's Up!</h3>
+        <p>Final Results:</p>
+    </div>
+    <div class="final-results-display" id="finalResultsDisplay">
+        <div class="result-summary">
+            <div class="result-item">
+                <span class="result-label">Questions:</span>
+                <span class="result-value" id="finalQuestionsTotal">5</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Correct:</span>
+                <span class="result-value" id="finalQuestionsCorrect">0</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Points Earned:</span>
+                <span class="result-value" id="pointsEarned">0</span>
+            </div>
+        </div>
+    </div>
+</div>
     
     <script src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
     <script>
