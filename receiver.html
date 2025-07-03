@@ -237,6 +237,93 @@
             background: rgba(0, 0, 0, 0.6);
             border-radius: 10px;
         }
+        .tv-questions-progress {
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .progress-info {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .questions-summary {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        
+        .questions-total,
+        .questions-correct {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .questions-total {
+            color: #00B4D8;
+        }
+        
+        .questions-correct {
+            color: #06FFA5;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #06FFA5, #00B4D8);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .final-results-display {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .result-summary {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 1.5rem;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: #FFD23F;
+        }
+        
+        .result-value {
+            font-weight: 900;
+            font-size: 2rem;
+            color: #06FFA5;
+        }
+        
+        .tv-status-message p {
+            font-size: 1.8rem;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
