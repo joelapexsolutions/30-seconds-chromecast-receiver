@@ -187,27 +187,6 @@
             50% { transform: scale(1.1); }
         }
         
-        .tv-questions {
-            display: grid;
-            gap: 10px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .tv-question {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 15px 20px;
-            border-radius: 10px;
-            font-size: 1.3rem;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-        
-        .tv-question.selected {
-            border-color: #06FFA5;
-            background: rgba(6, 255, 165, 0.2);
-        }
-        
         .tv-category {
             text-align: center;
             font-size: 1.8rem;
@@ -237,6 +216,13 @@
             background: rgba(0, 0, 0, 0.6);
             border-radius: 10px;
         }
+        
+        .tv-status-message p {
+            font-size: 1.8rem;
+            margin: 10px 0;
+        }
+        
+        /* NEW STYLES FOR QUESTION PROGRESS */
         .tv-questions-progress {
             max-width: 600px;
             margin: 20px auto;
@@ -319,11 +305,6 @@
             font-size: 2rem;
             color: #06FFA5;
         }
-        
-        .tv-status-message p {
-            font-size: 1.8rem;
-            margin: 10px 0;
-        }
     </style>
 </head>
 <body>
@@ -368,62 +349,62 @@
                 </div>
             </div>
             
-            <!-- Replace the timer section in receiver.html with this: -->
-
-<!-- Timer Section -->
-<div class="tv-game-section" id="timerSection">
-    <div class="tv-timer-display">
-        <div class="tv-timer" id="timer">30</div>
-    </div>
-    
-    <!-- Show progress instead of actual questions -->
-    <div class="tv-questions-progress" id="questionsProgress">
-        <div class="tv-category" id="timerCategory">Category Name</div>
-        <div class="progress-info">
-            <div class="questions-summary">
-                <div class="questions-total">
-                    <i class="fas fa-list"></i>
-                    <span id="questionsTotal">5</span> Questions
+            <!-- Timer Section -->
+            <div class="tv-game-section" id="timerSection">
+                <div class="tv-timer-display">
+                    <div class="tv-timer" id="timer">30</div>
                 </div>
-                <div class="questions-correct">
-                    <i class="fas fa-check-circle"></i>
-                    <span id="questionsCorrect">0</span> Correct
+                
+                <!-- Show progress instead of actual questions -->
+                <div class="tv-questions-progress" id="questionsProgress">
+                    <div class="tv-category" id="timerCategory">Category Name</div>
+                    <div class="progress-info">
+                        <div class="questions-summary">
+                            <div class="questions-total">
+                                <i class="fas fa-list"></i>
+                                <span id="questionsTotal">5</span> Questions
+                            </div>
+                            <div class="questions-correct">
+                                <i class="fas fa-check-circle"></i>
+                                <span id="questionsCorrect">0</span> Correct
+                            </div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="questionsProgressBar"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tv-status-message">
+                    <p><span id="currentPlayerTimer">Player</span> is describing...</p>
                 </div>
             </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="questionsProgressBar"></div>
+            
+            <!-- Results Section -->
+            <div class="tv-game-section" id="resultsSection">
+                <div class="tv-status-message">
+                    <h3>Time's Up!</h3>
+                    <p>Final Results:</p>
+                </div>
+                <div class="final-results-display" id="finalResultsDisplay">
+                    <div class="result-summary">
+                        <div class="result-item">
+                            <span class="result-label">Questions:</span>
+                            <span class="result-value" id="finalQuestionsTotal">5</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Correct:</span>
+                            <span class="result-value" id="finalQuestionsCorrect">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Points Earned:</span>
+                            <span class="result-value" id="pointsEarned">0</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
-    <div class="tv-status-message">
-        <p><span id="currentPlayerTimer">Player</span> is describing...</p>
-    </div>
-</div>
-
-<!-- Results Section -->
-<div class="tv-game-section" id="resultsSection">
-    <div class="tv-status-message">
-        <h3>Time's Up!</h3>
-        <p>Final Results:</p>
-    </div>
-    <div class="final-results-display" id="finalResultsDisplay">
-        <div class="result-summary">
-            <div class="result-item">
-                <span class="result-label">Questions:</span>
-                <span class="result-value" id="finalQuestionsTotal">5</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Correct:</span>
-                <span class="result-value" id="finalQuestionsCorrect">0</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Points Earned:</span>
-                <span class="result-value" id="pointsEarned">0</span>
-            </div>
-        </div>
-    </div>
-</div>
     
     <script src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
     <script>
@@ -444,10 +425,20 @@
                 handleGameData(data);
             } catch (error) {
                 console.error('Error parsing message:', error);
+                // Show error on screen for debugging
+                document.getElementById('gameInfo').textContent = 'Error: ' + error.message;
             }
         });
         
+        // Send ready message when receiver starts
+        context.sendCustomMessage('urn:x-cast:com.thirtyseconds.game', undefined, {
+            type: 'receiver_ready',
+            timestamp: Date.now()
+        });
+        
         function handleGameData(data) {
+            console.log('Handling game data:', data);
+            
             switch (data.type) {
                 case 'fullGameState':
                     updateFullGameDisplay(data);
@@ -465,21 +456,32 @@
                     showTimer(data);
                     break;
                     
+                case 'timer_update':
+                    updateTimer(data);
+                    break;
+                    
+                case 'answers_submitted':
+                    showAnswersSubmitted(data);
+                    break;
+                    
                 default:
                     console.log('Unknown message type:', data.type);
+                    // Show debug info
+                    document.getElementById('gameInfo').textContent = 
+                        'Received: ' + data.type + ' at ' + new Date().toLocaleTimeString();
             }
         }
         
         function updateFullGameDisplay(data) {
             console.log('Updating full game display:', data);
             
-            // Show game state, hide waiting
+            // IMPORTANT: Show game state immediately, hide waiting message
             document.getElementById('waitingMessage').style.display = 'none';
             document.getElementById('gameState').style.display = 'flex';
             
-            // Update game info
+            // Update game info header
             document.getElementById('gameInfo').textContent = 
-                `Round ${data.currentRound} - ${data.currentPlayer} (${data.currentTeam}) playing`;
+                `Round ${data.currentRound} - ${data.currentPlayer} (${data.currentTeam})`;
             
             // Update current turn info
             document.getElementById('playerInfo').textContent = 
@@ -501,6 +503,7 @@
             // Show appropriate section based on game status
             hideAllSections();
             
+            // Handle different game states
             if (data.gameStatus === 'setup' || !data.gameStatus) {
                 showDiceSection(data);
             } else if (data.gameStatus === 'dice') {
@@ -511,6 +514,20 @@
                 showTimerSection(data);
             } else if (data.gameStatus === 'results') {
                 showResultsSection(data);
+            } else if (data.gameStatus === 'active') {
+                // For active games, show based on other indicators
+                if (data.timerActive) {
+                    showTimerSection(data);
+                } else if (data.cardDrawn) {
+                    showCardSection(data);
+                } else if (data.diceValue !== null && data.diceValue !== undefined) {
+                    showDiceSection(data);
+                } else {
+                    showDiceSection(data);
+                }
+            } else {
+                // Default to dice section if unclear
+                showDiceSection(data);
             }
         }
         
@@ -543,6 +560,12 @@
             if (data.currentCategory) {
                 document.getElementById('category').textContent = data.currentCategory;
             }
+            
+            // Show questions count if available
+            if (data.questionsCount) {
+                const categoryElement = document.getElementById('category');
+                categoryElement.textContent = `${data.currentCategory || 'Questions'} (${data.questionsCount} questions)`;
+            }
         }
         
         function showTimerSection(data) {
@@ -562,28 +585,93 @@
                 }
             }
             
-            // Show questions (without interaction)
-            if (data.currentQuestions && data.currentQuestions.length > 0) {
-                const questionsDisplay = document.getElementById('questionsDisplay');
-                questionsDisplay.innerHTML = data.currentQuestions.map((question, index) => `
-                    <div class="tv-question ${data.selectedAnswers && data.selectedAnswers.includes(index) ? 'selected' : ''}">
-                        ${question}
-                    </div>
-                `).join('');
+            // Update category
+            if (data.currentCategory) {
+                document.getElementById('timerCategory').textContent = data.currentCategory;
             }
+            
+            // Update current player
+            if (data.currentPlayer) {
+                document.getElementById('currentPlayerTimer').textContent = data.currentPlayer;
+            }
+            
+            // Show progress instead of questions
+            const questionsTotal = data.questionsCount || 5;
+            const questionsCorrect = data.correctAnswersCount || 0;
+            
+            document.getElementById('questionsTotal').textContent = questionsTotal;
+            document.getElementById('questionsCorrect').textContent = questionsCorrect;
+            
+            // Update progress bar
+            const progressPercent = questionsTotal > 0 ? (questionsCorrect / questionsTotal) * 100 : 0;
+            document.getElementById('questionsProgressBar').style.width = progressPercent + '%';
         }
         
         function showResultsSection(data) {
             document.getElementById('resultsSection').classList.add('active');
             
-            // Show final questions with selections
-            if (data.currentQuestions && data.currentQuestions.length > 0) {
-                const finalDisplay = document.getElementById('finalQuestionsDisplay');
-                finalDisplay.innerHTML = data.currentQuestions.map((question, index) => `
-                    <div class="tv-question ${data.selectedAnswers && data.selectedAnswers.includes(index) ? 'selected' : ''}">
-                        ${question}
-                    </div>
-                `).join('');
+            // Show final results summary
+            const questionsTotal = data.questionsCount || 5;
+            const questionsCorrect = data.correctAnswersCount || 0;
+            
+            document.getElementById('finalQuestionsTotal').textContent = questionsTotal;
+            document.getElementById('finalQuestionsCorrect').textContent = questionsCorrect;
+            
+            // Calculate points based on dice value (if available)
+            let pointsEarned = 0;
+            if (data.diceValue !== undefined) {
+                if (data.diceValue === 0) {
+                    pointsEarned = questionsCorrect;
+                } else {
+                    pointsEarned = Math.max(0, questionsCorrect - data.diceValue);
+                }
+                
+                // Double points if active
+                if (data.doubleActive) {
+                    pointsEarned *= 2;
+                }
+            }
+            
+            document.getElementById('pointsEarned').textContent = pointsEarned;
+        }
+        
+        function updateTimer(data) {
+            // Update timer display
+            if (data.timeRemaining !== undefined) {
+                const timerElement = document.getElementById('timer');
+                timerElement.textContent = data.timeRemaining;
+                
+                // Apply warning classes
+                timerElement.className = 'tv-timer';
+                if (data.timeRemaining <= 5) {
+                    timerElement.classList.add('urgent');
+                } else if (data.timeRemaining <= 10) {
+                    timerElement.classList.add('warning');
+                }
+            }
+            
+            // Update progress
+            if (data.correctAnswersCount !== undefined && data.questionsCount !== undefined) {
+                document.getElementById('questionsCorrect').textContent = data.correctAnswersCount;
+                document.getElementById('questionsTotal').textContent = data.questionsCount;
+                
+                // Update progress bar
+                const progressPercent = data.questionsCount > 0 ? (data.correctAnswersCount / data.questionsCount) * 100 : 0;
+                document.getElementById('questionsProgressBar').style.width = progressPercent + '%';
+            }
+        }
+        
+        function showAnswersSubmitted(data) {
+            // Show final results
+            showResultsSection(data);
+            
+            // Update with submitted answer data
+            if (data.correctCount !== undefined) {
+                document.getElementById('finalQuestionsCorrect').textContent = data.correctCount;
+            }
+            
+            if (data.pointsEarned !== undefined) {
+                document.getElementById('pointsEarned').textContent = data.pointsEarned;
             }
         }
         
@@ -593,13 +681,18 @@
         }
         
         function showCardDrawn(data) {
-            showCardSection({ currentCategory: data.category });
+            showCardSection({ 
+                currentCategory: data.category,
+                questionsCount: data.questionsCount || 5
+            });
         }
         
         function showTimer(data) {
             showTimerSection({ 
                 timeRemaining: data.timeRemaining,
-                currentQuestions: data.questions 
+                currentCategory: data.category,
+                questionsCount: data.questionsCount || 5,
+                correctAnswersCount: data.correctAnswersCount || 0
             });
         }
         
