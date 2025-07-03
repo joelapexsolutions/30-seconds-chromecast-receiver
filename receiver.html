@@ -30,18 +30,23 @@
         }
         
         .tv-header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px 25px;
             text-align: center;
-            border-bottom: 3px solid #FFD23F;
+            border-bottom: 4px solid #FFD23F;
             flex-shrink: 0;
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .tv-title-image {
-            max-height: 60px;
-            max-width: 90%;
+            max-height: 100px;
+            max-width: 80%;
             height: auto;
             width: auto;
+            object-fit: contain;
         }
         
         .tv-game-info {
@@ -320,12 +325,24 @@
         
         /* Responsive adjustments */
         @media (max-height: 720px) {
-            .tv-header { padding: 5px 10px; }
-            .tv-title-image { max-height: 40px; }
+            .tv-header { padding: 15px 20px; min-height: 100px; }
+            .tv-title-image { max-height: 70px; }
             .tv-content { padding: 10px; }
             .tv-game-state { gap: 10px; }
             .tv-timer { font-size: 3rem; }
             .tv-dice-value { font-size: 2.5rem; padding: 12px 24px; }
+        }
+        
+        @media (max-width: 1280px) {
+            .tv-title-image { max-width: 70%; }
+            .tv-content { padding: 12px; }
+            .tv-scores-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+        }
+        
+        @media (max-height: 600px) {
+            .tv-header { padding: 10px 15px; min-height: 80px; }
+            .tv-title-image { max-height: 50px; }
+            .tv-timer { font-size: 2.5rem; }
         }
     </style>
 </head>
